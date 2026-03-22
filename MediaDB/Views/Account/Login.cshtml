@@ -1,0 +1,17 @@
+@model MediaDB.Models.LoginViewModel
+
+@using (Html.BeginForm())
+{
+    <div>
+        @Html.LabelFor(m => m.Username)
+        @Html.TextBoxFor(m => m.Username)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password)
+    </div>
+    <div>
+        <input type="submit" value="Login" />
+    </div>
+
+}

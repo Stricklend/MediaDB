@@ -1,0 +1,93 @@
+@{
+    ViewBag.Title = "회원가입";
+}
+
+<h2>회원가입</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    <div>
+        <label for="Username">Username:</label>
+        @Html.TextBox("Username", null, new { id = "Username" })
+    </div>
+    <div>
+        <label for="Password">Password:</label>
+        @Html.Password("Password", null, new { id = "Password" })
+    </div>
+    <div>
+        <label for="ConfirmPassword">Password 확인:</label>
+        @Html.Password("ConfirmPassword", null, new { id = "ConfirmPassword" })
+    </div>
+    <div id="Message" style="color: red;"></div>
+    <div>
+        <button type="submit" id="RegisterButton">회원가입</button>
+        @Html.ActionLink("로그인", "Login", "Account") |
+        @Html.ActionLink("메인화면", "Index", "Home")
+    </div>
+}
+
+@section Scripts {
+    <script src="~/Scripts/Register.js"></script>
+}
+
+@*@{
+        ViewBag.Title = "회원가입";
+    }
+
+    <h2>회원가입</h2>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        <div>
+            <label for="Username">Username:</label>
+            @Html.TextBox("Username", null, new { id = "Username" })
+        </div>
+        <div>
+            <label for="Password">Password:</label>
+            @Html.Password("Password", null, new { id = "Password" })
+        </div>
+        <div>
+            <label for="ConfirmPassword">Password 확인:</label>
+            @Html.Password("ConfirmPassword", null, new { id = "ConfirmPassword" })
+        </div>
+        <div id="Message" style="color: red;"></div>
+        <div>
+            <button type="submit" id="RegisterButton">회원가입</button>
+            @Html.ActionLink("로그인", "Login", "Account") |
+            @Html.ActionLink("메인화면", "Index", "Home")
+        </div>
+    }
+
+    @section Scripts {
+        <script>document.querySelector("form").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const username = document.getElementById("Username").value.trim();
+                const password = document.getElementById("Password").value.trim();
+                const confirmPassword = document.getElementById("ConfirmPassword").value.trim();
+                const messageDiv = document.getElementById("Message");
+                const registerButton = document.getElementById("RegisterButton");
+
+                messageDiv.style.color = "red";
+
+                if (!username) {
+                    messageDiv.textContent = "Username이 미입력 상태입니다.";
+                    return;
+                }
+                if (!password) {
+                    messageDiv.textContent = "Password가 미입력 상태입니다.";
+                    return;
+                }
+                if (!confirmPassword) {
+                    messageDiv.textContent = "Password 확인이 미입력 상태입니다.";
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    messageDiv.textContent = "Password와 Password 확인의 입력값이 일치하지 않습니다.";
+                    return;
+                }
+
+                messageDiv.style.color = "blue";
+                messageDiv.textContent = "회원가입을 완료하였습니다.";
+                registerButton.disabled = true;
+            });</script>
+    }*@

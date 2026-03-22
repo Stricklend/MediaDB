@@ -1,0 +1,19 @@
+# Visual Studio workspace files
+/.vscode/
+/.vs/
+/MediaDB/.vs/
+
+# Build outputs
+/MediaDB/bin/
+/MediaDB/obj/
+
+# NuGet packages restored locally
+/packages/
+
+# User-specific project and publish settings
+*.user
+*.pubxml
+*.pubxml.user
+
+# Exclude the app's environment-specific IIS configuration
+/MediaDB/Web.config

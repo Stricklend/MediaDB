@@ -1,0 +1,42 @@
+﻿<h2>메인 화면</h2>
+
+@{
+    var albums = new MediaDB.Models.AlbumService().GetAlbums();
+}
+@if (albums != null && albums.Count > 0)
+{
+    <div class="row">
+        @foreach (var album in albums)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <a href="@Url.Action("Detail", "Album", new { id = album.Id })">
+                        <img src="@album.ImagePath" class="card-img-top" style="height:200px;object-fit:cover;" alt="앨범 이미지" />
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="@Url.Action("Detail", "Album", new { id = album.Id })" class="text-decoration-none text-dark">
+                                @album.AlbumTitle
+                            </a>
+                        </h5>
+                        <p class="card-text">@album.Artist</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>등록된 앨범이 없습니다.</p>
+}
+
+@if (Session["Username"] != null)
+{
+    @*<h2>로그인 성공!</h2>*@
+    <a href="@Url.Action("AddAlbum", "Album")" class="btn btn-primary">Add Album</a>
+}
+else
+{
+    @*<h2>메인 화면</h2>*@
+}
