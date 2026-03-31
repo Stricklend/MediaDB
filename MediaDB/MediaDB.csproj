@@ -136,6 +136,7 @@
     <Compile Include="Models\AccountService.cs" />
     <Compile Include="Models\AlbumService.cs" />
     <Compile Include="Models\AppDbContext.cs" />
+    <Compile Include="Models\DbServiceBase.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
