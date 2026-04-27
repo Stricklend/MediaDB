@@ -5,10 +5,10 @@
 }
 @if (albums != null && albums.Count > 0)
 {
-    <div class="row">
+    <div class="row g-4">
         @foreach (var album in albums)
         {
-            <div class="col-md-3 mb-4">
+            <div class="col-3">
                 <div class="card">
                     <a href="@Url.Action("Detail", "Album", new { id = album.Id })">
                         <img src="@album.ImagePath" class="card-img-top" style="height:200px;object-fit:cover;" alt="앨범 이미지" />

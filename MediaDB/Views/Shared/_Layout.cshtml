@@ -1,56 +1,96 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
+@{
+    var isAccountPage = ViewBag.IsAccountPage != null && (bool)ViewBag.IsAccountPage;
+    var hasUserSession = Session["Username"] != null || Session["UserId"] != null || Session["user_id"] != null;
+    var displayName = Session["Username"] as string ?? Session["UserId"] as string ?? Session["user_id"] as string;
+    var currentAction = Convert.ToString(ViewContext.RouteData.Values["action"]);
+    var isLoginPage = isAccountPage && string.Equals(currentAction, "Login", StringComparison.OrdinalIgnoreCase);
+    var isRegisterPage = isAccountPage && string.Equals(currentAction, "Register", StringComparison.OrdinalIgnoreCase);
+    var shellClass = isAccountPage
+        ? "auth-page " + (isLoginPage ? "auth-page-login" : isRegisterPage ? "auth-page-register" : string.Empty)
+        : "site-page";
+}
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - 내 ASP.NET 애플리케이션</title>
+    <title>@ViewBag.Title - MediaDB</title>
     @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="~/Content/account-auth.css" />
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
 </head>
-<body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("애플리케이션 이름", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="탐색 토글" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    @*<li>@Html.ActionLink("홈", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("정보", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("연락처", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-                </ul>
-                <div class="d-flex ms-auto">
-                    @if (Session["Username"] == null)
+<body class="site-layout@(isAccountPage ? " auth-layout" : string.Empty)">
+    <div class="site-shell @shellClass">
+        <nav class="auth-topbar">
+            <div class="container-xxl auth-topbar__inner">
+                <div class="auth-topbar__brand-group">
+                    <a class="auth-topbar__brand" href="@Url.Action("Index", "Home")">MediaDB</a>
+                    <div class="auth-topbar__nav">
+                        <a class="auth-topbar__nav-link" href="@Url.Action("Index", "Home")">Main</a>
+                        <a class="auth-topbar__nav-link" href="#">Music</a>
+                        <!-- <a class="auth-topbar__nav-link" href="#">Games</a>
+                        <a class="auth-topbar__nav-link" href="#">Movies</a>
+                        <a class="auth-topbar__nav-link" href="#">TV</a> -->
+                    </div>
+                </div>
+                <div class="auth-topbar__actions">
+                    @if (!hasUserSession)
                     {
-                        <a href="@Url.Action("Login", "Account")" class="btn btn-outline-light me-2" role="button">로그인</a>
-                        <a href="@Url.Action("Register", "Account")" class="btn btn-outline-light" role="button">회원가입</a>
+                        <a class="auth-topbar__action @(isLoginPage ? "auth-topbar__action--filled is-current" : "auth-topbar__action--ghost")" href="@Url.Action("Login", "Account")">Login</a>
+                        <a class="auth-topbar__action @(isRegisterPage ? "auth-topbar__action--filled is-current" : "auth-topbar__action--ghost")" href="@Url.Action("Register", "Account")">Register</a>
                     }
                     else
                     {
-                        <span class="navbar-text text-white me-2">@Session["Username"]님</span>
-                        <form method="post" action="@Url.Action("Logout", "Account")" style="display:inline;">
+                        <span class="auth-topbar__user">@displayName</span>
+                        <form method="post" action="@Url.Action("Logout", "Account")" class="auth-topbar__form">
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-outline-light">로그아웃</button>
+                            <button type="submit" class="auth-topbar__action auth-topbar__action--ghost auth-topbar__button">Logout</button>
                         </form>
                     }
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - MediaDB</p>
+        @if (isAccountPage)
+        {
+            @RenderBody()
+        }
+        else
+        {
+            <main class="site-main">
+                <div class="container body-content site-main__content">
+                    @RenderBody()
+                </div>
+            </main>
+        }
+
+        <footer class="auth-footer">
+            <div class="container-xxl auth-footer__inner">
+                <div class="auth-footer__brand">
+                    <span class="auth-footer__title">MediaDB</span>
+                    <span class="auth-footer__caption">2026 integrated database archive</span>
+                </div>
+                <div class="auth-footer__links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Archive Guidelines</a>
+                    <a href="#">API Access</a>
+                </div>
+            </div>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @if (IsSectionDefined("scripts"))
+    {
+        @RenderSection("scripts", required: false)
+    }
+    else if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", required: false)
+    }
 </body>
 </html>

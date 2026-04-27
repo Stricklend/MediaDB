@@ -1,40 +1,92 @@
+@model MediaDB.Models.RegisterViewModel
+
 @{
-    ViewBag.Title = "È¸¿ø°¡ÀÔ";
+    ViewBag.Title = "Register";
+    ViewBag.IsAccountPage = true;
 }
 
-<h2>È¸¿ø°¡ÀÔ</h2>
+<main class="auth-main">
+        <div class="auth-main__glow"></div>
+        <div class="container auth-main__container">
+            <div class="auth-panel">
+                <div class="auth-panel__header">
+                    <h1 class="auth-title">Registration <span>Information</span></h1>
+                    <p class="auth-subtitle">Complete every user field required by the current <code>users</code> table.</p>
+                </div>
+                <div class="auth-card">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "registerForm", @class = "auth-form", autocomplete = "off", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="auth-form__group">
+                            @* <label for="user_id">ID:</label> *@
+                            @Html.LabelFor(m => m.user_id, new { @class = "auth-field__label" })
+                            @Html.TextBoxFor(m => m.user_id, new { id = "user_id", @class = "form-control auth-field__control", maxlength = "50", autocomplete = "username" })
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div class="auth-form__group">
+                                    @* <label for="user_password">Password:</label> *@
+                                    @Html.LabelFor(m => m.user_password, new { @class = "auth-field__label" })
+                                    @Html.PasswordFor(m => m.user_password, new { id = "user_password", @class = "form-control auth-field__control", maxlength = "255", autocomplete = "new-password" })
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="auth-form__group">
+                                    @* <label for="confirm_user_password">Password í™•å ì™ì˜™:</label> *@
+                                    @Html.LabelFor(m => m.confirm_user_password, new { @class = "auth-field__label" })
+                                    @Html.PasswordFor(m => m.confirm_user_password, new { id = "confirm_user_password", @class = "form-control auth-field__control", maxlength = "255", autocomplete = "new-password" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="auth-form__group">
+                            @Html.LabelFor(m => m.email, new { @class = "auth-field__label" })
+                            @Html.TextBoxFor(m => m.email, new { id = "email", @class = "form-control auth-field__control", maxlength = "100", autocomplete = "email", type = "email" })
+                        </div>
+                        <div class="auth-form__group">
+                            @Html.LabelFor(m => m.username, new { @class = "auth-field__label" })
+                            @Html.TextBoxFor(m => m.username, new { id = "username", @class = "form-control auth-field__control", maxlength = "50", autocomplete = "nickname" })
+                        </div>
+                        <div id="Message" class="auth-feedback" role="alert" aria-live="polite"></div>
+                        <div class="auth-system-grid" id="RegisterMeta">
+                            <div class="auth-system-card">
+                                <span class="auth-system-card__label">Account No.</span>
+                                <strong id="RegisterMetaId">Automatic</strong>
+                            </div>
+                            <div class="auth-system-card">
+                                <span class="auth-system-card__label">Created</span>
+                                <strong id="RegisterMetaCreated">On Submit</strong>
+                            </div>
+                            <div class="auth-system-card">
+                                <span class="auth-system-card__label">Updated</span>
+                                <strong id="RegisterMetaUpdated">On Submit</strong>
+                            </div>
+                        </div>
+                        <div class="auth-form__actions">
+                            <button type="submit" id="RegisterButton" class="btn auth-submit">
+                                <span class="auth-submit__text">Sign Up</span>
+                                <span class="auth-submit__icon" aria-hidden="true">&#8594;</span>
+                            </button>
+                            <div class="auth-inline-links">
+                                @Html.ActionLink("Login", "Login", "Account", null, new { @class = "auth-inline-link" })
+                                @Html.ActionLink("Home", "Index", "Home", null, new { @class = "auth-inline-link" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post))
-{
-    <div>
-        <label for="Username">Username:</label>
-        @Html.TextBox("Username", null, new { id = "Username" })
-    </div>
-    <div>
-        <label for="Password">Password:</label>
-        @Html.Password("Password", null, new { id = "Password" })
-    </div>
-    <div>
-        <label for="ConfirmPassword">Password È®ÀÎ:</label>
-        @Html.Password("ConfirmPassword", null, new { id = "ConfirmPassword" })
-    </div>
-    <div id="Message" style="color: red;"></div>
-    <div>
-        <button type="submit" id="RegisterButton">È¸¿ø°¡ÀÔ</button>
-        @Html.ActionLink("·Î±×ÀÎ", "Login", "Account") |
-        @Html.ActionLink("¸ŞÀÎÈ­¸é", "Index", "Home")
-    </div>
-}
+</main>
 
-@section Scripts {
+@section scripts {
     <script src="~/Scripts/Register.js"></script>
 }
 
 @*@{
-        ViewBag.Title = "È¸¿ø°¡ÀÔ";
+        ViewBag.Title = "íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™";
     }
 
-    <h2>È¸¿ø°¡ÀÔ</h2>
+    <h2>íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™</h2>
 
     @using (Html.BeginForm("Register", "Account", FormMethod.Post))
     {
@@ -47,14 +99,14 @@
             @Html.Password("Password", null, new { id = "Password" })
         </div>
         <div>
-            <label for="ConfirmPassword">Password È®ÀÎ:</label>
+            <label for="ConfirmPassword">Password í™•å ì™ì˜™:</label>
             @Html.Password("ConfirmPassword", null, new { id = "ConfirmPassword" })
         </div>
         <div id="Message" style="color: red;"></div>
         <div>
-            <button type="submit" id="RegisterButton">È¸¿ø°¡ÀÔ</button>
-            @Html.ActionLink("·Î±×ÀÎ", "Login", "Account") |
-            @Html.ActionLink("¸ŞÀÎÈ­¸é", "Index", "Home")
+            <button type="submit" id="RegisterButton">íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™</button>
+            @Html.ActionLink("å ì‹¸ê¹ì˜™å ì™ì˜™", "Login", "Account") |
+            @Html.ActionLink("å ì™ì˜™å ì™ì˜™í™”å ì™ì˜™", "Index", "Home")
         </div>
     }
 
@@ -70,24 +122,24 @@
                 messageDiv.style.color = "red";
 
                 if (!username) {
-                    messageDiv.textContent = "UsernameÀÌ ¹ÌÀÔ·Â »óÅÂÀÔ´Ï´Ù.";
+                    messageDiv.textContent = "Usernameå ì™ì˜™ å ì™ì˜™å ìŒ‰ë¤„ì˜™ å ì™ì˜™å ì™ì˜™å ìŒ‰ë‹ˆëŒì˜™.";
                     return;
                 }
                 if (!password) {
-                    messageDiv.textContent = "Password°¡ ¹ÌÀÔ·Â »óÅÂÀÔ´Ï´Ù.";
+                    messageDiv.textContent = "Passwordå ì™ì˜™ å ì™ì˜™å ìŒ‰ë¤„ì˜™ å ì™ì˜™å ì™ì˜™å ìŒ‰ë‹ˆëŒì˜™.";
                     return;
                 }
                 if (!confirmPassword) {
-                    messageDiv.textContent = "Password È®ÀÎÀÌ ¹ÌÀÔ·Â »óÅÂÀÔ´Ï´Ù.";
+                    messageDiv.textContent = "Password í™•å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ìŒ‰ë¤„ì˜™ å ì™ì˜™å ì™ì˜™å ìŒ‰ë‹ˆëŒì˜™.";
                     return;
                 }
                 if (password !== confirmPassword) {
-                    messageDiv.textContent = "Password¿Í Password È®ÀÎÀÇ ÀÔ·Â°ªÀÌ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.";
+                    messageDiv.textContent = "Passwordå ì™ì˜™ Password í™•å ì™ì˜™å ì™ì˜™ å ìŒ‰ë ¥ê³¤ì˜™å ì™ì˜™ å ì™ì˜™ì¹˜å ì™ì˜™å ì™ì˜™ å ì‹­ì™ì˜™å ì‹¹ëŒì˜™.";
                     return;
                 }
 
                 messageDiv.style.color = "blue";
-                messageDiv.textContent = "È¸¿ø°¡ÀÔÀ» ¿Ï·áÇÏ¿´½À´Ï´Ù.";
+                messageDiv.textContent = "íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì‹¹ë¤„ì˜™å ì‹¹ìš¸ì˜™å ì™ì˜™å ì‹¹ëŒì˜™.";
                 registerButton.disabled = true;
             });</script>
     }*@

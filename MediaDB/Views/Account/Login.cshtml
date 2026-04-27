@@ -1,17 +1,44 @@
 @model MediaDB.Models.LoginViewModel
 
-@using (Html.BeginForm())
-{
-    <div>
-        @Html.LabelFor(m => m.Username)
-        @Html.TextBoxFor(m => m.Username)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password)
-    </div>
-    <div>
-        <input type="submit" value="Login" />
-    </div>
-
+@{
+    ViewBag.Title = "Login";
+    ViewBag.IsAccountPage = true;
 }
+
+<main class="auth-main">
+        <div class="auth-main__glow"></div>
+        <div class="container auth-main__container">
+            <div class="auth-panel auth-panel--compact">
+                <div class="auth-panel__header">
+                    <h1 class="auth-title">Access <span>Portal</span></h1>
+                    <p class="auth-subtitle">Sign in with the same account data stored in the <code>users</code> table.</p>
+                </div>
+                <div class="auth-card">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "loginForm", @class = "auth-form", autocomplete = "off", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="auth-form__group">
+                            @Html.LabelFor(m => m.user_id, new { @class = "auth-field__label" })
+                            @Html.TextBoxFor(m => m.user_id, new { id = "user_id", @class = "form-control auth-field__control", maxlength = "50", autocomplete = "username" })
+                        </div>
+                        <div class="auth-form__group">
+                            @Html.LabelFor(m => m.user_password, new { @class = "auth-field__label" })
+                            @Html.PasswordFor(m => m.user_password, new { id = "user_password", @class = "form-control auth-field__control", maxlength = "255", autocomplete = "current-password" })
+                        </div>
+                        <div class="@(ViewBag.Error != null ? "auth-feedback is-error" : "auth-feedback")" id="LoginMessage" role="alert" aria-live="polite">@ViewBag.Error</div>
+                        <div class="auth-form__actions">
+                            <button type="submit" class="btn auth-submit">
+                                <span class="auth-submit__text">Login</span>
+                                <span class="auth-submit__icon" aria-hidden="true">&#8594;</span>
+                            </button>
+                            <div class="auth-inline-links">
+                                @Html.ActionLink("Create Account", "Register", "Account", null, new { @class = "auth-inline-link" })
+                                @Html.ActionLink("Home", "Index", "Home", null, new { @class = "auth-inline-link" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="auth-vertical-mark">OBSIDIAN ARCHIVE</div>
+</main>
